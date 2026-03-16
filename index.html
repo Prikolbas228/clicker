@@ -19,48 +19,48 @@
       --muted2: #888;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'IBM Plex Mono', monospace;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    body { background: var(--bg); color: var(--text); font-family: 'IBM Plex Mono', monospace; min-height: 100vh; display: flex; flex-direction: column; }
 
-    /* HEADER */
-    header {
-      width: 100%;
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-    }
+    header { width: 100%; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
     .logo { font-family: 'Bebas Neue', sans-serif; font-size: 46px; color: var(--text); letter-spacing: 4px; line-height: 1; }
     .logo em { color: var(--orange); font-style: normal; }
     .header-meta { text-align: right; display: flex; flex-direction: column; gap: 4px; }
     .header-tag { font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; }
     #record-line { font-size: 11px; color: var(--orange); letter-spacing: 1px; min-height: 16px; }
 
-    /* SCREENS */
-    .screen { display: none; flex: 1; width: 100%; max-width: 480px; margin: 0 auto; padding: 52px 24px; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
+    .screen { display: none; flex: 1; width: 100%; max-width: 480px; margin: 0 auto; padding: 52px 24px; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
     .screen.active { display: flex; }
 
     /* FORM */
     .screen-title { font-family: 'Bebas Neue', sans-serif; font-size: 34px; letter-spacing: 3px; color: var(--text); text-align: center; }
     .screen-title em { color: var(--orange); font-style: normal; }
 
-    .field-group { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+    .fields { width: 100%; display: flex; flex-direction: column; gap: 20px; }
+    .field-group { display: flex; flex-direction: column; gap: 8px; }
     .field-group label { font-size: 10px; letter-spacing: 3px; color: var(--muted2); text-transform: uppercase; }
+
+    .input-wrap { position: relative; }
+    .input-wrap .placeholder-hint {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      font-family: 'IBM Plex Mono', monospace; font-size: 18px;
+      color: var(--muted); pointer-events: none; letter-spacing: 1px;
+      transition: opacity 0.15s;
+    }
+    .input-wrap input:not(:placeholder-shown) + .placeholder-hint,
+    .input-wrap input:focus + .placeholder-hint { opacity: 0; }
+
     .field-group input {
       width: 100%; background: var(--bg2); border: 1px solid var(--border2);
       border-radius: 2px; color: var(--text); font-family: 'IBM Plex Mono', monospace;
-      font-size: 18px; padding: 14px 16px; outline: none; transition: border-color 0.2s; letter-spacing: 1px;
+      font-size: 18px; padding: 14px 16px; outline: none;
+      transition: border-color 0.2s; letter-spacing: 1px;
     }
     .field-group input:focus { border-color: var(--orange); }
-    .field-group input::placeholder { color: var(--muted); }
-    .field-error { font-size: 11px; color: #ff4444; letter-spacing: 1px; min-height: 16px; }
+    .field-group input::placeholder { color: transparent; }
+
+    /* пример-подсказка под полем */
+    .field-hint { font-size: 11px; color: var(--muted); letter-spacing: 1px; padding-left: 2px; }
+    .field-error { font-size: 11px; color: #ff5555; letter-spacing: 1px; min-height: 15px; }
 
     /* BUTTONS */
     .btn-primary {
@@ -70,7 +70,6 @@
     }
     .btn-primary:hover { background: #ff8040; }
     .btn-primary:active { transform: scale(0.97); }
-    .btn-primary:disabled { background: var(--muted); cursor: not-allowed; }
 
     .btn-outline {
       padding: 10px 24px; background: transparent; border: 1px solid var(--border2); border-radius: 2px;
@@ -96,13 +95,13 @@
 
     .btn-ring-wrap { position: relative; }
     .btn-ring { position: absolute; inset: -14px; border-radius: 50%; border: 1px solid var(--border); animation: pulse 2s ease-in-out infinite; pointer-events: none; }
-    @keyframes pulse { 0%,100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.9; transform: scale(1.05); } }
+    @keyframes pulse { 0%,100%{opacity:.3;transform:scale(1)} 50%{opacity:.9;transform:scale(1.05)} }
 
     #click-btn {
       width: 148px; height: 148px; border-radius: 50%; border: 2px solid var(--orange);
       background: transparent; color: var(--orange); font-family: 'Bebas Neue', sans-serif;
       font-size: 22px; letter-spacing: 4px; cursor: pointer;
-      transition: background 0.12s, color 0.12s, transform 0.07s, box-shadow 0.15s;
+      transition: background .12s, color .12s, transform .07s, box-shadow .15s;
       position: relative; z-index: 1;
     }
     #click-btn:hover:not(:disabled) { background: var(--orange); color: #0a0a0a; box-shadow: 0 0 36px var(--orange-glow); }
@@ -111,7 +110,7 @@
 
     #status { font-size: 12px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; min-height: 18px; text-align: center; }
     #status.done { color: var(--orange); font-weight: 700; }
-    .game-actions { display: flex; gap: 12px; }
+    .game-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
     /* STATS */
     .stats-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 3px; color: var(--text); text-align: center; }
@@ -120,23 +119,20 @@
 
     .stats-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .stats-table thead tr { border-bottom: 1px solid var(--border); }
-    .stats-table th { padding: 10px 12px; text-align: left; font-size: 10px; letter-spacing: 2px; color: var(--muted2); text-transform: uppercase; font-weight: 400; }
-    .stats-table td { padding: 10px 12px; border-bottom: 1px solid var(--border2); color: var(--text); letter-spacing: 1px; }
+    .stats-table th { padding: 10px 10px; text-align: left; font-size: 10px; letter-spacing: 2px; color: var(--muted2); text-transform: uppercase; font-weight: 400; white-space: nowrap; }
+    .stats-table td { padding: 10px 10px; border-bottom: 1px solid var(--border2); color: var(--text); letter-spacing: 1px; white-space: nowrap; }
     .stats-table tr:last-child td { border-bottom: none; }
     .stats-table .best-row td { color: var(--orange); }
-    .stats-table .best-row td.time-col::after { content: ' 🏆'; font-size: 11px; }
     .stats-table td.time-col { font-weight: 700; }
     .stats-empty { font-size: 13px; color: var(--muted); letter-spacing: 2px; text-align: center; padding: 32px 0; }
     .stats-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
-    /* FOOTER */
     footer { width: 100%; padding: 18px 40px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
     .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--orange); letter-spacing: 3px; }
     .footer-text { font-size: 10px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
 
-    /* BURST */
-    @keyframes burst { 0% { opacity: 0.7; transform: scale(0.4); } 100% { opacity: 0; transform: scale(2.2); } }
-    .burst { position: fixed; width: 70px; height: 70px; border-radius: 50%; border: 1.5px solid var(--orange); pointer-events: none; animation: burst 0.35s ease-out forwards; z-index: 9999; }
+    @keyframes burst { 0%{opacity:.7;transform:scale(.4)} 100%{opacity:0;transform:scale(2.2)} }
+    .burst { position: fixed; width: 70px; height: 70px; border-radius: 50%; border: 1.5px solid var(--orange); pointer-events: none; animation: burst .35s ease-out forwards; z-index: 9999; }
   </style>
 </head>
 <body>
@@ -153,16 +149,26 @@
 <div class="screen active" id="screen-form">
   <div class="screen-title">Введи данные<br>перед <em>игрой</em></div>
 
-  <div class="field-group">
-    <label>ФИО</label>
-    <input type="text" id="input-name" placeholder="Например: Иванов Иван Иванович" autocomplete="off" maxlength="40"/>
-    <div class="field-error" id="err-name"></div>
-  </div>
+  <div class="fields">
+    <div class="field-group">
+      <label>Имя</label>
+      <div class="input-wrap">
+        <input type="text" id="input-name" placeholder=" " autocomplete="off" maxlength="40"/>
+        <span class="placeholder-hint">Иван</span>
+      </div>
+      <div class="field-hint">например: Иван</div>
+      <div class="field-error" id="err-name"></div>
+    </div>
 
-  <div class="field-group">
-    <label>Группа</label>
-    <input type="text" id="input-group" placeholder="Например:1111" autocomplete="off" maxlength="30"/>
-    <div class="field-error" id="err-group"></div>
+    <div class="field-group">
+      <label>Телефон</label>
+      <div class="input-wrap">
+        <input type="tel" id="input-phone" placeholder=" " autocomplete="off" maxlength="20"/>
+        <span class="placeholder-hint">+7 999 123 45 67</span>
+      </div>
+      <div class="field-hint">например: +7 999 123 45 67</div>
+      <div class="field-error" id="err-phone"></div>
+    </div>
   </div>
 
   <button class="btn-primary" id="btn-start-game">НАЧАТЬ ИГРУ</button>
@@ -179,7 +185,6 @@
   </div>
 
   <div class="progress-track"><div id="progress-fill"></div></div>
-
   <div id="timer-display">00:00.0</div>
 
   <div class="btn-ring-wrap">
@@ -210,22 +215,20 @@
 
 <footer>
   <div class="footer-logo">ПБ2</div>
-  <div class="footer-text" id="footer-text">67 кликов · статистика · excel</div>
+  <div class="footer-text">67 кликов · статистика · excel</div>
 </footer>
 
 <script>
   const GOAL = 67;
-  const STORAGE_KEY = 'pb2_stats_v2';
+  const STORAGE_KEY = 'pb2_stats_v3';
 
-  let currentPlayer = { name: '', group: '' };
-  let clicks = 0, running = false, done = false, startTime = null, rafId = null;
-  let gameStartTs = null;
+  let currentPlayer = { name: '', phone: '' };
+  let clicks = 0, running = false, done = false, startTime = null, rafId = null, gameStartTs = null;
 
-  // Elements
   const inputName  = document.getElementById('input-name');
-  const inputGroup = document.getElementById('input-group');
+  const inputPhone = document.getElementById('input-phone');
   const errName    = document.getElementById('err-name');
-  const errGroup   = document.getElementById('err-group');
+  const errPhone   = document.getElementById('err-phone');
   const counter      = document.getElementById('counter');
   const progressFill = document.getElementById('progress-fill');
   const timerDisplay = document.getElementById('timer-display');
@@ -237,48 +240,55 @@
   const statsContainer = document.getElementById('stats-container');
   const statsCount   = document.getElementById('stats-count');
 
-  // Storage
-  function loadStats() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-    catch { return []; }
-  }
-  function saveStats(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
-  function addResult(entry) { const a = loadStats(); a.push(entry); saveStats(a); }
+  function loadStats() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; } }
+  function saveStats(a) { localStorage.setItem(STORAGE_KEY, JSON.stringify(a)); }
+  function addResult(e) { const a = loadStats(); a.push(e); saveStats(a); }
 
-  // Record line in header
   function updateRecordLine() {
     const arr = loadStats();
     if (!arr.length) { recordLine.textContent = ''; return; }
-    const best = arr.reduce((a, b) => a.ms < b.ms ? a : b);
+    const best = arr.reduce((a,b) => a.ms < b.ms ? a : b);
     recordLine.textContent = `Рекорд: ${best.name} — ${best.time}`;
   }
   updateRecordLine();
 
-  // Screen nav
   function showScreen(name) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + name).classList.add('active');
   }
 
-  // Form
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function formatPhone(val) {
+    // убираем всё кроме цифр и +
+    return val.replace(/[^\d+\s\-()]/g, '');
+  }
+
+  inputPhone.addEventListener('input', () => {
+    inputPhone.value = formatPhone(inputPhone.value);
+  });
+
+  // Form submit
   document.getElementById('btn-start-game').addEventListener('click', () => {
     const name  = inputName.value.trim();
-    const group = inputGroup.value.trim();
-    errName.textContent = ''; errGroup.textContent = '';
+    const phone = inputPhone.value.trim();
+    errName.textContent = ''; errPhone.textContent = '';
     let ok = true;
-    if (!name)  { errName.textContent  = 'Введи ФИО'; ok = false; }
-    if (!group) { errGroup.textContent = 'Введи группу'; ok = false; }
+    if (!name)  { errName.textContent  = 'Введи имя'; ok = false; }
+    if (!phone) { errPhone.textContent = 'Введи телефон'; ok = false; }
+    else if (phone.replace(/\D/g,'').length < 7) { errPhone.textContent = 'Слишком короткий номер'; ok = false; }
     if (!ok) return;
-    currentPlayer = { name, group };
-    playerInfo.innerHTML = `<span>${escHtml(name)}</span> · ${escHtml(group)}`;
+
+    currentPlayer = { name, phone };
+    playerInfo.innerHTML = `<span>${escHtml(name)}</span> · ${escHtml(phone)}`;
     resetGame();
     showScreen('game');
   });
 
-  [inputName, inputGroup].forEach(inp => {
-    inp.addEventListener('keydown', e => {
-      if (e.key === 'Enter') document.getElementById('btn-start-game').click();
-    });
+  [inputName, inputPhone].forEach(inp => {
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('btn-start-game').click(); });
   });
 
   document.getElementById('btn-goto-stats').addEventListener('click', () => { renderStats(); showScreen('stats'); });
@@ -305,8 +315,7 @@
     progressFill.style.width = '0%';
     timerDisplay.textContent = '00:00.0';
     timerDisplay.classList.remove('running','done');
-    clickBtn.disabled = false;
-    clickBtn.textContent = 'КЛИК';
+    clickBtn.disabled = false; clickBtn.textContent = 'КЛИК';
     statusEl.textContent = 'Нажми, чтобы начать';
     statusEl.classList.remove('done');
     gameActions.style.display = 'none';
@@ -324,16 +333,12 @@
   clickBtn.addEventListener('click', (e) => {
     if (done) return;
     spawnBurst(e);
-
     if (!running) {
-      running = true;
-      startTime = null;
-      gameStartTs = performance.now();
+      running = true; startTime = null; gameStartTs = performance.now();
       statusEl.textContent = 'Кликай!';
       timerDisplay.classList.add('running');
       rafId = requestAnimationFrame(tickTimer);
     }
-
     clicks++;
     counter.textContent = clicks;
     progressFill.style.width = Math.min(clicks / GOAL * 100, 100) + '%';
@@ -341,117 +346,74 @@
     if (clicks >= GOAL) {
       running = false; done = true;
       cancelAnimationFrame(rafId);
-
       const ms = Math.round(performance.now() - gameStartTs);
       const finalTime = formatTime(ms);
       timerDisplay.textContent = finalTime;
-
       counter.classList.add('done');
-      timerDisplay.classList.remove('running');
-      timerDisplay.classList.add('done');
-      clickBtn.disabled = true;
-      clickBtn.textContent = '67!';
+      timerDisplay.classList.remove('running'); timerDisplay.classList.add('done');
+      clickBtn.disabled = true; clickBtn.textContent = '67!';
       statusEl.textContent = `Готово за ${finalTime}!`;
       statusEl.classList.add('done');
       gameActions.style.display = 'flex';
 
       const now = new Date();
-      addResult({
-        name:     currentPlayer.name,
-        group:    currentPlayer.group,
-        time:     finalTime,
-        ms:       ms,
-        date:     now.toLocaleDateString('ru-RU'),
-        datetime: now.toLocaleString('ru-RU'),
-      });
+      addResult({ name: currentPlayer.name, phone: currentPlayer.phone, time: finalTime, ms, date: now.toLocaleDateString('ru-RU'), datetime: now.toLocaleString('ru-RU') });
       updateRecordLine();
     }
   });
 
   document.getElementById('btn-play-again').addEventListener('click', resetGame);
-  document.getElementById('btn-change-player').addEventListener('click', () => { showScreen('form'); });
+  document.getElementById('btn-change-player').addEventListener('click', () => showScreen('form'));
   document.getElementById('btn-goto-stats2').addEventListener('click', () => { renderStats(); showScreen('stats'); });
 
-  // Stats render
+  // Stats
   function renderStats() {
     const arr = loadStats();
     statsCount.textContent = arr.length ? `Всего попыток: ${arr.length}` : '';
-    if (!arr.length) {
-      statsContainer.innerHTML = '<div class="stats-empty">Пока нет результатов</div>';
-      return;
-    }
-    const bestMs = Math.min(...arr.map(r => r.ms));
-    // сортируем по времени
+    if (!arr.length) { statsContainer.innerHTML = '<div class="stats-empty">Пока нет результатов</div>'; return; }
     const sorted = [...arr].sort((a,b) => a.ms - b.ms);
-    const rows = sorted.map((r, i) => {
-      const isBest = r.ms === bestMs && i === 0;
-      return `<tr class="${isBest ? 'best-row' : ''}">
-        <td>${i + 1}</td>
+    const bestMs = sorted[0].ms;
+    const rows = sorted.map((r,i) => `
+      <tr class="${r.ms === bestMs && i === 0 ? 'best-row' : ''}">
+        <td>${i+1}</td>
         <td>${escHtml(r.name)}</td>
-        <td>${escHtml(r.group)}</td>
-        <td class="time-col">${r.time}</td>
+        <td>${escHtml(r.phone)}</td>
+        <td class="time-col">${r.time}${i===0?' 🏆':''}</td>
         <td>${r.date}</td>
-      </tr>`;
-    }).join('');
+      </tr>`).join('');
     statsContainer.innerHTML = `
       <table class="stats-table">
-        <thead><tr><th>#</th><th>Имя</th><th>Группа</th><th>Время</th><th>Дата</th></tr></thead>
+        <thead><tr><th>#</th><th>Имя</th><th>Телефон</th><th>Время</th><th>Дата</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>`;
   }
 
-  // Excel export
+  // Excel
   document.getElementById('btn-export-xlsx').addEventListener('click', () => {
     const arr = loadStats();
     if (!arr.length) { alert('Нет данных для экспорта!'); return; }
-
     const sorted = [...arr].sort((a,b) => a.ms - b.ms);
-
-    const wsData = [['#', 'Имя', 'Группа', 'Время (мм:сс.т)', 'Дата и время']];
-    sorted.forEach((r, i) => wsData.push([i + 1, r.name, r.group, r.time, r.datetime]));
+    const wsData = [['#', 'Имя', 'Телефон', 'Время (мм:сс.т)', 'Дата и время']];
+    sorted.forEach((r,i) => wsData.push([i+1, r.name, r.phone, r.time, r.datetime]));
 
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet(wsData);
+    ws['!cols'] = [{wch:4},{wch:22},{wch:20},{wch:16},{wch:22}];
 
-    ws['!cols'] = [{ wch: 4 }, { wch: 22 }, { wch: 18 }, { wch: 18 }, { wch: 22 }];
-
-    // Стиль шапки
     ['A1','B1','C1','D1','E1'].forEach(cell => {
       if (!ws[cell]) return;
-      ws[cell].s = {
-        font: { bold: true, color: { rgb: 'FFFFFF' } },
-        fill: { patternType: 'solid', fgColor: { rgb: 'FF6B1A' } },
-        alignment: { horizontal: 'center' },
-      };
-    });
-
-    // Подсветка лучшего результата (строка 2 после сортировки)
-    ['A2','B2','C2','D2','E2'].forEach(cell => {
-      if (!ws[cell]) return;
-      ws[cell].s = {
-        font: { bold: true, color: { rgb: 'FF6B1A' } },
-        fill: { patternType: 'solid', fgColor: { rgb: '1A1A1A' } },
-      };
+      ws[cell].s = { font:{bold:true,color:{rgb:'FFFFFF'}}, fill:{patternType:'solid',fgColor:{rgb:'FF6B1A'}}, alignment:{horizontal:'center'} };
     });
 
     XLSX.utils.book_append_sheet(wb, ws, 'Статистика ПБ2');
-
-    const dateStr = new Date().toLocaleDateString('ru-RU').replace(/\./g,'-');
-    XLSX.writeFile(wb, `pb2_stats_${dateStr}.xlsx`);
+    const d = new Date().toLocaleDateString('ru-RU').replace(/\./g,'-');
+    XLSX.writeFile(wb, `pb2_stats_${d}.xlsx`);
   });
 
   document.getElementById('btn-back-form').addEventListener('click', () => showScreen('form'));
   document.getElementById('btn-clear-stats').addEventListener('click', () => {
-    if (confirm('Удалить всю статистику? Это действие нельзя отменить.')) {
-      localStorage.removeItem(STORAGE_KEY);
-      updateRecordLine();
-      renderStats();
-    }
+    if (confirm('Удалить всю статистику?')) { localStorage.removeItem(STORAGE_KEY); updateRecordLine(); renderStats(); }
   });
-
-  function escHtml(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
 </script>
 </body>
 </html>
