@@ -155,13 +155,13 @@
 
   <div class="field-group">
     <label>ФИО</label>
-    <input type="text" id="input-name" placeholder="Например: Иван" autocomplete="off" maxlength="40"/>
+    <input type="text" id="input-name" placeholder="Например: Иванов Иван Иванович" autocomplete="off" maxlength="40"/>
     <div class="field-error" id="err-name"></div>
   </div>
 
   <div class="field-group">
     <label>Группа</label>
-    <input type="text" id="input-group" placeholder="Например: ПБ2-101" autocomplete="off" maxlength="30"/>
+    <input type="text" id="input-group" placeholder="Например:1111" autocomplete="off" maxlength="30"/>
     <div class="field-error" id="err-group"></div>
   </div>
 
@@ -266,7 +266,7 @@
     const group = inputGroup.value.trim();
     errName.textContent = ''; errGroup.textContent = '';
     let ok = true;
-    if (!name)  { errName.textContent  = 'Введи имя'; ok = false; }
+    if (!name)  { errName.textContent  = 'Введи ФИО'; ok = false; }
     if (!group) { errGroup.textContent = 'Введи группу'; ok = false; }
     if (!ok) return;
     currentPlayer = { name, group };
